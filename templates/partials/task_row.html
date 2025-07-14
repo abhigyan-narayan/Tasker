@@ -1,0 +1,19 @@
+<tr data-id="{{ i.id }}" data-status="{{ i.status }}">
+  <td class="serial-cell">{% if sno is defined %}{{ sno }}{% else %}--{% endif %}</td>
+  <td>{{ i.title }}</td>
+  <td>{{ i.desc }}</td>
+  <td>{{ i.time.strftime('%Y-%m-%d %H:%M') }}</td>
+  <td>{{ i.status }}</td>
+  <td>
+    <div class="btn-group">
+      <a href="/edit/{{ i.id }}" class="btn-sm">Edit</a>
+
+      <a href="#" class="btn-sm btn-toggle {% if i.status == 'Completed' %}btn-pending{% else %}btn-completed{% endif %}"
+         data-id="{{ i.id }}">
+        {% if i.status == 'Completed' %}Mark Pending{% else %}Mark as done{% endif %}
+      </a>
+
+      <a href="#" class="btn-sm btn-delete" data-id="{{ i.id }}">Delete</a>
+    </div>
+  </td>
+</tr>

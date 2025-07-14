@@ -1,33 +1,34 @@
 {% extends 'base.html' %}
 {% block title %} Home {% endblock title %}
 {% block body %}
-<div class="container my-4">
-  <h4>Add a Task</h4>
-  <form action="/" method="POST">
-    <div class="mb-3">
+<div class="container">
+  <h2>Add a Task</h2>
+  <form id="add-task-form">
+    <div class="child-container">
       <label for="title" class="form-label">Task Title</label>
       <input type="text" class="form-control" name="title" id="title" required aria-describedby="emailHelp" />
     </div>
-    <div class="mb-3">
-      <label for="desc" class="form-label">Describe the task</label>
+    <div class="child-container">
+      <label for="desc" class="form-label">Describe task</label>
       <input type="text" class="form-control" name="desc" id="desc" />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="center-container">
+      <button type="submit" class="btn">Submit</button>
+    </div>
   </form>
 </div>
 
-<div class="container my-5">
-  <h4>Pending Tasks</h4>
+<div class="container">
+  <h2>Pending Tasks</h2>
   {% if pending_tasks|length == 0 %}
-  <div class="alert alert-dark" role="alert">
+  <div class="alert" role="alert">
     No Tasks Pending.
   </div>
   {% else %}
-  <table class="table table-striped">
+  <table class="table">
     <thead>
       <tr>
         <th scope="col">SNo</th>
-        <!-- <th scope="col">ID</th> -->
         <th scope="col">Title</th>
         <th scope="col">Description</th>
         <th scope="col">Time</th>
@@ -35,39 +36,27 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="pending-task-body">
       {% for i in pending_tasks %}
-      <tr>
-        <th scope="row">{{ loop.index }}</th>
-        <!-- <td>{{ i.id }}</td> -->
-        <td>{{ i.title }}</td>
-        <td>{{ i.desc }}</td>
-        <td>{{ i.time }}</td>
-        <td>{{ i.status }}</td>
-        <td>
-          <a href="/toggle/{{i.id}}" type="button" class="btn btn-primary">Mark as done</a>
-          <a href="/edit/{{i.id}}" type="button" class="btn btn-primary">Edit</a>
-          <a href="/delete/{{i.id}}" type="button" class="btn btn-primary">Delete</a>
-        </td>
-      </tr>
+      {% set sno = loop.index %}
+      {% include "partials/task_row.html" %}
       {% endfor %}
     </tbody>
   </table>
   {% endif %}
 </div>
 
-<div class="container my-5">
-  <h4>Completed Tasks</h4>
+<div class="container">
+  <h2>Completed Tasks</h2>
   {% if completed_tasks|length == 0 %}
-  <div class="alert alert-dark" role="alert">
+  <div class="alert" role="alert">
     No Tasks.
   </div>
   {% else %}
-  <table class="table table-striped">
+  <table class="table">
     <thead>
       <tr>
         <th scope="col">SNo</th>
-        <!-- <th scope="col">ID</th> -->
         <th scope="col">Title</th>
         <th scope="col">Description</th>
         <th scope="col">Time</th>
@@ -75,21 +64,10 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="completed-task-body">
       {% for i in completed_tasks %}
-      <tr>
-        <th scope="row">{{ loop.index }}</th>
-        <!-- <td>{{ i.id }}</td> -->
-        <td>{{ i.title }}</td>
-        <td>{{ i.desc }}</td>
-        <td>{{ i.time }}</td>
-        <td>{{ i.status }}</td>
-        <td>
-          <a href="/toggle/{{i.id}}" type="button" class="btn btn-primary">Mark Pending</a>
-          <a href="/edit/{{i.id}}" type="button" class="btn btn-primary">Edit</a>
-          <a href="/delete/{{i.id}}" type="button" class="btn btn-primary">Delete</a>
-        </td>
-      </tr>
+      {% set sno = loop.index %}
+      {% include "partials/task_row.html" %}
       {% endfor %}
     </tbody>
   </table>

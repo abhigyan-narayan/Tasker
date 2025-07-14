@@ -27,11 +27,16 @@ def home():
         new_task = Task(title=title, desc=desc)
         db.session.add(new_task)
         db.session.commit()
+
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return render_template("partials/task_row.html", i=new_task)
+    
         return redirect(url_for('home'))
     
     all_tasks = Task.query.all() 
     pending_tasks = Task.query.filter_by(status="Pending").all()
     completed_tasks = Task.query.filter_by(status="Completed").all()
+
     return render_template("index.html", all_tasks=all_tasks, pending_tasks=pending_tasks, completed_tasks=completed_tasks)
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
@@ -44,19 +49,26 @@ def edit(id):
         return redirect(url_for('home'))
     return render_template("edit.html", task=task)
 
-@app.route("/delete/<int:id>")
+@app.route("/delete/<int:id>", methods=["GET", "DELETE"])
 def delete(id):
     task = Task.query.get_or_404(id)
     db.session.delete(task)
     db.session.commit()
+    if request.method == "DELETE":
+        return "", 204 
+    
     return redirect(url_for('home'))
 
-@app.route("/toggle/<int:id>")
+@app.route("/toggle/<int:id>", methods=["GET", "POST"])
 def toggle(id):
     task = Task.query.get_or_404(id)
     task.status = "Completed" if task.status == "Pending" else "Pending"
     db.session.commit()
+
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return render_template("partials/task_row.html", i=task)
+    
     return redirect(url_for('home'))
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)

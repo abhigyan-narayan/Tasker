@@ -2,18 +2,20 @@
 {% block title %} Edit {% endblock title %}
 
 {% block body %}
-<div class="container my-3">
+<div class="container">
   <h4>Add a Task</h4>
   <form action="/edit/{{task.id}}" method="POST">
-    <div class="mb-3">
+    <div class="child-container">
       <label for="title" class="form-label">Task Title</label>
       <input type="text" class="form-control" name="title" id="title" value="{{task.title}}" required aria-describedby="emailHelp" />
     </div>
-    <div class="mb-3">
+    <div class="child-container">
       <label for="desc" class="form-label">Describe the task</label>
       <input type="text" class="form-control" name="desc" id="desc" value="{{task.desc}}"/>
     </div>
-    <button type="submit" class="btn btn-primary">Edit</button>
+    <div class="center-container">
+    <button type="submit" class="btn">Edit</button>
+    </div>
   </form>
 </div>
 {% endblock body %}
